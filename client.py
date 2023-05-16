@@ -55,5 +55,32 @@ def ready(data):
         'movement': c4_move,
     })
 
+@sio.on('finish')
+def finish(data):
+    print("Game", data['game_id'], "has finished")
+    if data['winner_turn_id'] == data['player_turn_id']:
+        print("Tu ganaste")
+    else:
+        print("Tu perdiste")
+
+    print("Ready to play again!")
+
+    ## Start Again
+
+    sio.emit('player_ready', {
+        'tournament_id' : tournamentID,
+        'game_id' : data['game_id'],
+        'player_turn_id': data['player_turn_id']
+    })
+
+
+
+@sio.on('disconnect')
+def disconnect():
+    print("Desconectado del servidor")
+
+@sio.on('error')
+def error(error_info):
+    print("Error: " + error_info)
 
 
