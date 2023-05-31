@@ -24,7 +24,7 @@ def ready(data):
     gameID = data['game_id']
     playerTurnID = data['player_turn_id']
     board = data['board']
-    move = random.randint(0, 6)
+    move = random.randint(0, 6)#llamada a makemove
 
     socketIO.emit('play', {
         'tournament_id': tournamentID,

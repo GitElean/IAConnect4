@@ -21,18 +21,53 @@ class connect4Move:
     #elige el movimiento a realizar    
     def makeMove(self, board,):
         #retorna el movimiento a realizar
-        #llama a make move
         #valida el movimiento
         return 0 #el retorno debe ser solamente un número entre 0-6
     
 
     #optimiza el movimiento a realizar 
-    def minMax(self, board, move, player):
-
-        #debe incluir look-ahead
-        #debe incluir heuristica
-        #debe incluir alpha-beta pruning
-        return 0
+    def minMax(self, board, depth, maximizingPlayer, alpha, beta):
+        valid_moves = [move for move in range(7) if self.validMove(board, move)]
+        #profundidad
+        if depth == 0 or len(valid_moves) == 0:
+            return None, self.evaluate(board)
+        #maximizamos nuetros tiro
+        if maximizingPlayer:
+            max_eval = -self.infinito
+            best_move = None
+            
+            for move in valid_moves:
+                new_board = self.makeMoveInBoard(board, move, 1)
+                evaluation = self.minMax(new_board, depth - 1, False, alpha, beta)[1]
+                
+                if evaluation > max_eval:
+                    max_eval = evaluation
+                    best_move = move
+                #poda
+                alpha = max(alpha, evaluation)
+                if beta <= alpha:
+                    break
+            
+            return best_move, max_eval
+        
+        else:
+            #minimizacion del tiro rival
+            min_eval = self.infinito
+            best_move = None
+            
+            for move in valid_moves:
+                new_board = self.makeMoveInBoard(board, move, 2)
+                evaluation = self.minMax(new_board, depth - 1, True, alpha, beta)[1]
+                
+                if evaluation < min_eval:
+                    min_eval = evaluation
+                    best_move = move
+                #poda
+                beta = min(beta, evaluation)
+                if beta <= alpha:
+                    break
+            
+            return best_move, min_eval
 
     #Revisa la adyacencia de fichas   
     def getAdjacentTiles(self, board, row, col, player=None):
@@ -82,3 +117,8 @@ class connect4Move:
                     total_value += strategic_value[col]
         
         return total_value
+    
+    #se obtiene el valor del rival para poder obtener el valor defensivo y el min
+    def getOpponentMove(self):
+        return 1 if self.move == 2 else 2
+    
