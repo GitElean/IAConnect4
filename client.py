@@ -1,86 +1,55 @@
 #Elean Rivas 19062
 #Connect4 Client
 
-import socketio
+
+from socketIO_client import SocketIO
 import random
-import math
+
+tournamentID = "142857"
+socketIO = SocketIO("192.168.1.131", 4000)
 
 
-#Settings
-host = 'localhost'
-port = '4000'
-
-HOST = host
-PORT = port
-userName = input("Ingrese su nombre de usuario:\n")
-tournamentID = in´put("Ingrese el ID del torneo:\n")
-
-
-#Cliente de Socket.io
-sio = socketio.Cliente()
-address = 'http://' + HOST + ":" + + PORT
-sio.connect(address)
-
-
-#Conexión
-@sio.on('connect')
 def connect():
-    ## Client has connected
-    print("Conectado: " + userName)
+    print("Conected")
+    socketIO.emit('signin', {
+        'user_name': "Elean",
+        'tournament_id': tournamentID,
+        'user_role': 'player'
+})
 
-    ## Signin signal
-    sio.emit('signin', {
-        'user_name' : userName,
-        'tournament_id' : tournamentID,
-        'user_role' : 'player'
-    })
+def signin():
+    print("Has ingresado correctamente!")
 
-@sio.on('ready')
 def ready(data):
     gameID = data['game_id']
     playerTurnID = data['player_turn_id']
     board = data['board']
-    c4_move = random.randint(1, 4)
-    tournamentID = data['tournament_id']
+    move = random.randint(0, 6)
 
-    print("ID del juego: " + gameID)
-    print("ID del jugador: " + playerTurnID)
-    print("Movimiento: " + str(c4_move))
-    print("Tablero: " + board)
-
-    sio.emit('play', {
+    socketIO.emit('play', {
         'tournament_id': tournamentID,
         'player_turn_id': playerTurnID,
         'game_id': gameID,
-        'movement': c4_move,
+        'movement': move
     })
 
-@sio.on('finish')
+
 def finish(data):
-    print("Game", data['game_id'], "has finished")
-    if data['winner_turn_id'] == data['player_turn_id']:
-        print("Tu ganaste")
-    else:
-        print("Tu perdiste")
+    gameID = data['game_id']
+    playerTurnID = data['player_turn_id']
+    winnerTurnID = data['winner_turn_id']
+    board = data['board']
 
-    print("Ready to play again!")
-
-    ## Start Again
-
-    sio.emit('player_ready', {
-        'tournament_id' : tournamentID,
-        'game_id' : data['game_id'],
-        'player_turn_id': data['player_turn_id']
+    socketIO.emit('player_ready', {
+        'tournament_id': tournamentID,
+        'player_turn_id': playerTurnID,
+        'game_id': gameID
     })
 
 
+socketIO.on('connect', connect)
+socketIO.on('ok_signin', signin)
+socketIO.on('ready', ready)
+socketIO.on('finish', finish)
 
-@sio.on('disconnect')
-def disconnect():
-    print("Desconectado del servidor")
-
-@sio.on('error')
-def error(error_info):
-    print("Error: " + error_info)
-
-
+socketIO.wait()
