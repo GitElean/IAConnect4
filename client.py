@@ -4,10 +4,12 @@
 
 from socketIO_client import SocketIO
 import random
+from move import connect4Move
 
 tournamentID = "142857"
 socketIO = SocketIO("192.168.1.131", 4000)
 
+connect4_move = connect4Move()
 
 def connect():
     print("Conected")
@@ -24,7 +26,7 @@ def ready(data):
     gameID = data['game_id']
     playerTurnID = data['player_turn_id']
     board = data['board']
-    move = random.randint(0, 6)#llamada a makemove
+    move = connect4_move.makeMove(board)
 
     socketIO.emit('play', {
         'tournament_id': tournamentID,

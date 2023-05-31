@@ -20,9 +20,22 @@ class connect4Move:
 
     #elige el movimiento a realizar    
     def makeMove(self, board,):
-        #retorna el movimiento a realizar
-        #valida el movimiento
-        return 0 #el retorno debe ser solamente un número entre 0-6
+        valid_moves = [move for move in range(7) if self.validMove(board, move)]
+    
+        if not valid_moves:
+            raise ValueError("No valid moves available.")
+        
+        for move in valid_moves:
+            if self.validMove(board, move):
+                best_move = move
+            break
+    
+        best_move = self.minMax(board, self.depth, True, -self.infinito, self.infinito)[0]
+        
+        if best_move not in valid_moves:
+            raise ValueError("The selected move is not valid.")
+        
+        return best_move
     
 
     #optimiza el movimiento a realizar 
