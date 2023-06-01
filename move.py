@@ -8,78 +8,73 @@ class connect4Move:
     def __init__(self):
         self.infinito = 100000000000
         self.board = []
+        self.move = 0
         self.depth = 5
     
     #verifica si el movimiento es valido(No se sale del tablero)
     def validMove(self, board, move):
-        for row in range(5, -1, -1):
-            if board[row][move] == 0:
-                return True
-        return False
+        valid_movs = []
+        for col in range(len(board[0])):
+            if board[0][col] == 0:
+                valid_movs.append(col)
+        if move in valid_movs:
+            return True
+        else:
+            return False
 
     #elige el movimiento a realizar    
-    def makeMove(self, board,):
-        valid_moves = [move for move in range(7) if self.validMove(board, move)]
+    def makeMove(self, board):
+        response = False
+        while response == False:
+            best_move = self.minMax(board, self.depth, True, -self.infinito, self.infinito)
+            response = self.validMove(board, best_move)
+            if response == True:
+                return best_move
     
-        if not valid_moves:
-            raise ValueError("No valid moves available.")
-        
-        for move in valid_moves:
-            if self.validMove(board, move):
-                best_move = move
-            break
-    
-        best_move = self.minMax(board, self.depth, True, -self.infinito, self.infinito)[0]
-        
-        if best_move not in valid_moves:
-            raise ValueError("The selected move is not valid.")
-        
-        return best_move
-    
-
     #optimiza el movimiento a realizar 
-    def minMax(self, board, depth, maximizingPlayer, alpha, beta):
-        valid_moves = [move for move in range(7) if self.validMove(board, move)]
-        #profundidad
-        if depth == 0 or len(valid_moves) == 0:
+    def minMax(self, board, depth, maximizingPlayer, alpha, beta, move):
+        if depth == 0:
             return None, self.evaluate(board)
-        #maximizamos nuetros tiro
+
         if maximizingPlayer:
             max_eval = -self.infinito
             best_move = None
             
-            for move in valid_moves:
-                new_board = self.makeMoveInBoard(board, move, 1)
-                evaluation = self.minMax(new_board, depth - 1, False, alpha, beta)[1]
-                
-                if evaluation > max_eval:
-                    max_eval = evaluation
-                    best_move = move
-                #poda
-                alpha = max(alpha, evaluation)
-                if beta <= alpha:
-                    break
+            for move in range(7):
+                if self.validMove(board, move):
+                    new_board = self.makeMoveInBoard(board, move, 1)
+                    evaluation = self.evaluate(new_board)
+                    
+                    if evaluation > max_eval:
+                        max_eval = evaluation
+                        best_move = move
+                    
+                    alpha = max(alpha, evaluation)
+                    if beta <= alpha:
+                        break
             
-            return best_move
+            return best_move, max_eval
         
         else:
-            #minimizacion del tiro rival
             min_eval = self.infinito
             best_move = None
             
-            for move in valid_moves:
-                new_board = self.makeMoveInBoard(board, move, 2)
-                evaluation = self.minMax(new_board, depth - 1, True, alpha, beta)[1]
-                
-                if evaluation < min_eval:
-                    min_eval = evaluation
-                    best_move = move
-                #poda
-                beta = min(beta, evaluation)
-                if beta <= alpha:
-                    break
+            for move in range(7):
+                if self.validMove(board, move):
+                    new_board = self.makeMoveInBoard(board, move, 2)
+                    evaluation = self.evaluate(new_board)
+                    
+                    if evaluation < min_eval:
+                        min_eval = evaluation
+                        best_move = move
+                    
+                    beta = min(beta, evaluation)
+                    if beta <= alpha:
+                        break
             
-            return best_move
+            return best_move, min_eval
+
+
 
     #Revisa la adyacencia de fichas   
     def getAdjacentTiles(self, board, row, col, player=None):
