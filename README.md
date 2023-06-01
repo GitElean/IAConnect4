@@ -1,6 +1,6 @@
 # IAConnect4
 
-##Heuristica
+## Heuristica
 Para construir la heurística final basándonos en los 4 papers mencionados arriba tomaremos en cuenta que el valor básico de colocar la ficha será de 3, es decir no importa la posición, fichas adyacentes, o cualquier circunstancia el valor intrínseco propio de la ficha será de 3. Además de esto se tomarán en cuenta los siguientes tres aspectos para tomar una decisión en la heurística
 
 Valor de ficha propia adyacente: es decir que nivel de fila provoca provoca poner esa moneda, siendo que hay 5 niveles a pesar de que el nivel 5 tiene el mismo valor de victoria que el 4. para esto se asignara una variable n que tomará el valor de su nivel, es decir si la ficha que se colocará provocará que hayan 3 en fila el valor de n sera de 3, lo que provocará que el cambio del valor del movimiento a 3n
