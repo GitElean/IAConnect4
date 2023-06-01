@@ -11,12 +11,14 @@ Valor estratégico posicional: El valor estratégico posicional hace referencia 
 Por lo que nuestra operación final de la heurística quedará de la siguiente manera:
 
 		T=Fn*k+p
+		
 
 	Donde:
-T es el valor total del tiro
-F es la ficha a tirar de valor base 3
-k el valor defensivo de la tirada
-p el valor estratégico posicional.
+	T es el valor total del tiro
+	F es la ficha a tirar de valor base 3
+	k el valor defensivo de la tirada
+	p el valor estratégico posicional.
+
 
 
 
