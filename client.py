@@ -7,7 +7,7 @@ import random
 from move import connect4Move
 
 tournamentID = "142857"
-socketIO = SocketIO("192.168.1.131", 4000)
+socketIO = SocketIO("127.0.0.1", 4000)
 
 connect4_move = connect4Move()
 

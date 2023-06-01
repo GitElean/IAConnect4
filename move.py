@@ -5,9 +5,8 @@
 class connect4Move:
     
 
-    def __init__(self, move):
+    def __init__(self):
         self.infinito = 100000000000
-        self.move = move
         self.board = []
         self.depth = 5
     
