@@ -134,3 +134,12 @@ class connect4Move:
     def getOpponentMove(self):
         return 1 if self.move == 2 else 2
     
+    def makeMoveInBoard(self, board, move, player):
+        new_board = [row[:] for row in board]
+        
+        for row in range(5, -1, -1):
+            if new_board[row][move] == 0:
+                new_board[row][move] = player
+                break
+        
+        return new_board
