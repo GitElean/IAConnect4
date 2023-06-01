@@ -22,7 +22,7 @@ Por lo que nuestra operación final de la heurística quedará de la siguiente m
 
 
 
-Referencias:
+### Referencias:
 Chaudhary, S., Pandey, S., & Khera, M. H. Alpha-Beta Pruning in Mini-Max Algorithm–An Optimized Approach for a Connect-4 Game.
 
 Nasa, R., Didwania, R., Maji, S., & Kumar, V. (2018). Alpha-beta pruning in mini-max algorithm–an optimized approach for a connect-4 game. Int. Res. J. Eng. Technol, 1637-1641.
