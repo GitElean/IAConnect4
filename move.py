@@ -1,14 +1,14 @@
 #Elean Rivas 19062
 #Connect4 moveIA
 #Clase que se encarga de realizar los movimientos en el tablero
-
+import random
 class connect4Move:
     
 
     def __init__(self):
         self.infinito = 100000000000
         self.board = []
-        self.move = 0
+        self.move = random.randint(0, 6)
         self.depth = 5
     
     #verifica si el movimiento es valido(No se sale del tablero)
@@ -26,7 +26,7 @@ class connect4Move:
     def makeMove(self, board):
         response = False
         while response == False:
-            best_move = self.minMax(board, self.depth, True, -self.infinito, self.infinito)
+            best_move = self.minMax(board, self.depth, True, -self.infinito, self.infinito, self.move)
             response = self.validMove(board, best_move)
             if response == True:
                 return best_move
@@ -53,7 +53,7 @@ class connect4Move:
                     if beta <= alpha:
                         break
             
-            return best_move, max_eval
+            return best_move
         
         else:
             min_eval = self.infinito
@@ -72,7 +72,7 @@ class connect4Move:
                     if beta <= alpha:
                         break
             
-            return best_move, min_eval
+            return best_move
 
 
 
