@@ -61,7 +61,7 @@ class connect4Move:
                 if beta <= alpha:
                     break
             
-            return best_move, max_eval
+            return best_move
         
         else:
             #minimizacion del tiro rival
@@ -80,7 +80,7 @@ class connect4Move:
                 if beta <= alpha:
                     break
             
-            return best_move, min_eval
+            return best_move
 
     #Revisa la adyacencia de fichas   
     def getAdjacentTiles(self, board, row, col, player=None):
