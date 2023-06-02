@@ -16,6 +16,7 @@ Por lo que nuestra operación final de la heurística quedará de la siguiente m
 	Donde:
 	T es el valor total del tiro
 	F es la ficha a tirar de valor base 3
+	N es la cantidad de fichas de adyacencia
 	k el valor defensivo de la tirada
 	p el valor estratégico posicional.
 
